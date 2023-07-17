@@ -17,9 +17,11 @@ namespace ReactMaaserTracker.Data
             _connectionString = connectionString;
         }
 
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(_connectionString);
+
         }
 
         public DbSet<Income> IncomeDeposits { get; set; }

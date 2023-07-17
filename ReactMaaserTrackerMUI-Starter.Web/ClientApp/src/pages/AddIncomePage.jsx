@@ -27,7 +27,7 @@ const AddIncomePage = () => {
     }, [])
 
     const onAddClick = async () => {
-        await axios.post("/api/maaser/addincome", {  source: selectedSource.source, amount, datesubmitted: selectedDate });
+        await axios.post("/api/maaser/addincome", {  incomesourceid: selectedSource.id, amount, datesubmitted: selectedDate });
         nav('/income');
     }
     

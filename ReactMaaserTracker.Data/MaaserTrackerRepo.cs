@@ -60,7 +60,7 @@ namespace ReactMaaserTracker.Data
         public List<Income> GetAllIncomes()
         {
             var context = new ReactMaaserTrackerDataContext(_connectionString);
-            return context.IncomeDeposits.ToList();
+            return context.IncomeDeposits.Include(i => i.IncomeSource).ToList();
         }
 
         public List<MaaserDeposit> GetAllMaaserDeposits()
@@ -72,13 +72,13 @@ namespace ReactMaaserTracker.Data
         public decimal GetTotalIncomeAmount()
         {
             var context = new ReactMaaserTrackerDataContext(_connectionString);
-            return context.IncomeDeposits.Select(i => i.Amount).Sum();
+            return context.IncomeDeposits.Sum(i => i.Amount);
         }
 
         public decimal GetTotalMaaserAmount()
         {
             var context = new ReactMaaserTrackerDataContext(_connectionString);
-            return context.MaaserDeposits.Select(i => i.Amount).Sum();
+            return context.MaaserDeposits.Sum(i => i.Amount);
         }
     }
 }

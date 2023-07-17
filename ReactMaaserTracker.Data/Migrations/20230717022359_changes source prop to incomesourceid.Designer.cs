@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReactMaaserTracker.Data;
 
@@ -11,9 +12,10 @@ using ReactMaaserTracker.Data;
 namespace ReactMaaserTracker.Data.Migrations
 {
     [DbContext(typeof(ReactMaaserTrackerDataContext))]
-    partial class ReactMaaserTrackerDataContextModelSnapshot : ModelSnapshot
+    [Migration("20230717022359_changes source prop to incomesourceid")]
+    partial class changessourceproptoincomesourceid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,13 +88,11 @@ namespace ReactMaaserTracker.Data.Migrations
 
             modelBuilder.Entity("ReactMaaserTracker.Data.Income", b =>
                 {
-                    b.HasOne("ReactMaaserTracker.Data.IncomeSource", "IncomeSource")
+                    b.HasOne("ReactMaaserTracker.Data.IncomeSource", null)
                         .WithMany("Incomes")
                         .HasForeignKey("IncomeSourceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("IncomeSource");
                 });
 
             modelBuilder.Entity("ReactMaaserTracker.Data.IncomeSource", b =>

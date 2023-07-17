@@ -8,21 +8,30 @@ const IncomePage = () => {
 
   const [groupBySource, setGroupBySource] = useState(false);
   const [incomes, setIncomes] = useState([]);
-  const [sourceTitles, setSourceTitles] = useState([]);
 
   useEffect(() => {
 
     const getIncomes = async () => {
       const { data } = await axios.get("/api/maaser/getallincomes");
       setIncomes(data);
-      setSourceTitles(incomes.map((income) => income.source));
     }
-
     getIncomes();
 
-  }, [groupBySource])
+  }, [])
 
+  const groupIncomePayments = () => {
+    return incomes.reduce((arr, income) => {
+      const currentName = income.incomeSource.source;
+      const group = arr.find(p => p.source === currentName);
+      if (group) {
+        group.incomes.push(income);
+      } else {
+        arr.push({ source: currentName, incomes: [income] });
+      }
 
+      return arr;
+    }, []);
+  }
 
   return (
     <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 3 }}>
@@ -56,8 +65,7 @@ const IncomePage = () => {
               {incomes.map((income) => (
                 <TableRow key={income.id}>
                   <TableCell component="th" scope="row" sx={{ fontSize: '18px' }}>
-                    {income.source}
-                  </TableCell>
+                    {income?.incomeSource.source}                  </TableCell>
                   <TableCell align="right" sx={{ fontSize: '18px' }}>${(income.amount).toFixed(2)}</TableCell>
                   <TableCell align="right" sx={{ fontSize: '18px' }}>{dayjs(income.date).format('MM-DD-YYYY')}</TableCell>
                 </TableRow>
@@ -65,8 +73,8 @@ const IncomePage = () => {
             </TableBody>
           </Table>
         </TableContainer>
-      ) : (
-        sourceTitles.map((source) => (
+      ) : (  
+        groupIncomePayments().map(({ source, incomes }) => (
           <div key={source} sx={{ width: '80%', maxWidth: '80%' }}>
             <Typography variant="h5" gutterBottom component="div" sx={{ mt: 5 }}>
               {source}
@@ -81,10 +89,10 @@ const IncomePage = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {incomes.filter((income) => income.source === source).map((income) => (
+                  {incomes.map((income) => (
                     <TableRow key={income.id}>
                       <TableCell component="th" scope="row" sx={{ fontSize: '18px' }}>
-                        {income.source}
+                        {income?.incomeSource.source}
                       </TableCell>
                       <TableCell align="right" sx={{ fontSize: '18px' }}>${(income.amount).toFixed(2)}</TableCell>
                       <TableCell align="right" sx={{ fontSize: '18px' }}>{dayjs(income.date).format('MM-DD-YYYY')}</TableCell>

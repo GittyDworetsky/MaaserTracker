@@ -77,6 +77,7 @@ namespace ReactMaaserTrackerMUI_Starter.Web.Controllers
 
         }
 
+
         [HttpGet]
         [Route("getallmaaserdeposits")]
         public List<MaaserDeposit> GetAllMaaserDeposits()
@@ -103,6 +104,8 @@ namespace ReactMaaserTrackerMUI_Starter.Web.Controllers
             return repo.GetTotalMaaserAmount();
 
         }
+
+       
 
 
     }

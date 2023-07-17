@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReactMaaserTracker.Data;
 
@@ -11,9 +12,10 @@ using ReactMaaserTracker.Data;
 namespace ReactMaaserTracker.Data.Migrations
 {
     [DbContext(typeof(ReactMaaserTrackerDataContext))]
-    partial class ReactMaaserTrackerDataContextModelSnapshot : ModelSnapshot
+    [Migration("20230717194710_final fixes")]
+    partial class finalfixes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,9 +41,14 @@ namespace ReactMaaserTracker.Data.Migrations
                     b.Property<int>("IncomeSourceId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("IncomeSourceId1")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IncomeSourceId");
+
+                    b.HasIndex("IncomeSourceId1");
 
                     b.ToTable("IncomeDeposits");
                 });
@@ -86,11 +93,15 @@ namespace ReactMaaserTracker.Data.Migrations
 
             modelBuilder.Entity("ReactMaaserTracker.Data.Income", b =>
                 {
-                    b.HasOne("ReactMaaserTracker.Data.IncomeSource", "IncomeSource")
+                    b.HasOne("ReactMaaserTracker.Data.IncomeSource", null)
                         .WithMany("Incomes")
                         .HasForeignKey("IncomeSourceId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("ReactMaaserTracker.Data.IncomeSource", "IncomeSource")
+                        .WithMany()
+                        .HasForeignKey("IncomeSourceId1");
 
                     b.Navigation("IncomeSource");
                 });

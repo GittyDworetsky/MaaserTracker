@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReactMaaserTracker.Data;
 
@@ -11,9 +12,10 @@ using ReactMaaserTracker.Data;
 namespace ReactMaaserTracker.Data.Migrations
 {
     [DbContext(typeof(ReactMaaserTrackerDataContext))]
-    partial class ReactMaaserTrackerDataContextModelSnapshot : ModelSnapshot
+    [Migration("20230717155011_added list props to incomes and incomesources")]
+    partial class addedlistpropstoincomesandincomesources
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +23,21 @@ namespace ReactMaaserTracker.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("IncomeIncomeSource", b =>
+                {
+                    b.Property<int>("IncomeSourcesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IncomesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("IncomeSourcesId", "IncomesId");
+
+                    b.HasIndex("IncomesId");
+
+                    b.ToTable("IncomeIncomeSource");
+                });
 
             modelBuilder.Entity("ReactMaaserTracker.Data.Income", b =>
                 {
@@ -40,8 +57,6 @@ namespace ReactMaaserTracker.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IncomeSourceId");
 
                     b.ToTable("IncomeDeposits");
                 });
@@ -84,20 +99,19 @@ namespace ReactMaaserTracker.Data.Migrations
                     b.ToTable("MaaserDeposits");
                 });
 
-            modelBuilder.Entity("ReactMaaserTracker.Data.Income", b =>
+            modelBuilder.Entity("IncomeIncomeSource", b =>
                 {
-                    b.HasOne("ReactMaaserTracker.Data.IncomeSource", "IncomeSource")
-                        .WithMany("Incomes")
-                        .HasForeignKey("IncomeSourceId")
+                    b.HasOne("ReactMaaserTracker.Data.IncomeSource", null)
+                        .WithMany()
+                        .HasForeignKey("IncomeSourcesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("IncomeSource");
-                });
-
-            modelBuilder.Entity("ReactMaaserTracker.Data.IncomeSource", b =>
-                {
-                    b.Navigation("Incomes");
+                    b.HasOne("ReactMaaserTracker.Data.Income", null)
+                        .WithMany()
+                        .HasForeignKey("IncomesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

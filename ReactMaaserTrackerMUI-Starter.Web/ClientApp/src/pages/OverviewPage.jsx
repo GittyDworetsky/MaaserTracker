@@ -35,7 +35,7 @@ const OverviewPage = () => {
         textAlign: 'center'
       }}
     >
-      <Paper elevation={3} sx={{ padding: '120px', borderRadius: '15px' }}>
+      <Paper elevation={3} sx={{ padding: '60px', borderRadius: '15px' }}>
         <Typography variant="h2" gutterBottom>
           Overview
         </Typography>
